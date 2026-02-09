@@ -9,6 +9,16 @@
             "projectName": "qc-logbook",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-QcLogbookApplication<qc-logbook>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.qclogbook.QcLogbookApplication",
+            "projectName": "qc-logbook",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }
