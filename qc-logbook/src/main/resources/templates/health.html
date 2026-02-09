@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Health</title>
+</head>
+<body>
+    <!-- 起動確認用画面であることを明記 -->
+    <!-- 画面種別ごとの整理用に templates/inspections, sessions, fragments を用意 -->
+    <h1>QC Logbook is running</h1>
+    <p th:text="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss')}">1970-01-01 00:00:00</p>
+</body>
+</html>

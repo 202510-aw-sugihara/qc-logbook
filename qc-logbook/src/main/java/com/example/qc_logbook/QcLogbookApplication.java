@@ -3,7 +3,7 @@ package com.example.qc_logbook;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.example.qc_logbook", "com.example.qclogbook"})
 public class QcLogbookApplication {
 
 	public static void main(String[] args) {

@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-QcLogbookApplication<qc-logbook>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.example.qc_logbook.QcLogbookApplication",
+            "projectName": "qc-logbook",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
