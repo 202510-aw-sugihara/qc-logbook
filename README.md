@@ -1,134 +1,42 @@
-QC Logbook
+# QC Logbook
 
 Temperature Soak Inspection Management System
 
-1. 概要（Overview）
+## 1. �A�v���T�v�iQC Logbook�Ƃ́j
+- ���x�\�[�N�����̃��O���Ǘ����邽�߂�Web�A�v���ł��B
+- CSV�Ŏ擾�������x�f�[�^����荞�݁A�������ʂ𔻒�E�L�^���܂��B
+- ����̎����L�^��W�������A�Č����ƒǐՐ������߂邱�Ƃ��ړI�ł��B
 
-QC Logbook は、製品の温度ソーク試験において
-**「規定電圧（12V）到達の瞬間」を基準時刻（t=0ms）**として、
-前後1分間の温度ログを記録・判定し、試験結果のトレーサビリティを確保する
-業務向けWebアプリケーションです。
+## 2. �z�胆�[�X�P�[�X
+- �i���ۏؕ���ł̉��x�\�[�N�����̋L�^�E�m�F
+- �����S���҂�CSV���A�b�v���[�h���A���ʂ𑦎��Ɋm�F
+- �������ʂ̗����������E�Q��
 
-品質試験における
+## 3. �����d�l�i�O������j
+- ����: 90�� / �퉷: 23�� / �ቷ: -10��
+- �e2���ԃ\�[�N
+- �K��d��12V���B�� t=0ms
+- �L�^�͈�: �O��1���i-60000?+60000ms�j
+- �T���v�����O: 20ms
 
-試験条件の明確化
+## 4. ���x����d�l
+- ���e�͈�: �ڕW�}5��
+- �������
+  - PASS: 0ms���x�����e�͈͓�
+  - FAIL: 0ms���x�����e�͈͊O
+  - PENDING: �������ʂ̊m��O�܂��̓f�[�^�s��
+- ��\�l: 0ms���x
 
-判定根拠の可視化
+## 5. �@�\�ꗗ�iMVP�j
+- �N���m�F�p�̃w���X�`�F�b�N���
+- CSV��荞�݁i�\��j
+- �������ʂ̔���i�\��j
+- �������ʂ̈ꗗ�\���i�\��j
 
-データの再現性・追跡性
-
-を目的として設計されています。
-
-2. 想定ユースケース
-
-製品の温度ソーク試験（高温・常温・低温）
-
-試験後に加電圧を印加し、規定電圧到達時点の挙動を評価
-
-温度ログをCSVで取り込み、自動判定を行いたいケース
-
-Excel管理からの脱却、試験履歴の一元管理
-
-3. 試験仕様（前提条件）
-温度環境
-環境	目標温度
-高温	90℃
-常温	23℃
-低温	-10℃
-
-各環境で 2時間ソーク（保持）
-
-トリガー条件
-
-ソーク後に加電圧を印加
-
-規定電圧：12V
-
-12V に到達した瞬間を t=0ms（トリガーイベント） と定義
-
-ログ取得条件
-
-記録範囲：t=0ms の 前後1分
-
--60,000ms ～ +60,000ms
-
-サンプリング周期：20ms
-
-データ量：
-
-約6,000点 / 環境
-
-約18,000点 / 検査
-
-4. 温度判定仕様
-
-許容範囲：目標温度 ±5℃
-
-環境	許容範囲
-高温	85 ～ 95 ℃
-常温	18 ～ 28 ℃
-低温	-15 ～ -5 ℃
-判定ロジック（セッション単位）
-
-ログ未登録：PENDING
-
-規格外データが1点でも存在：FAIL
-
-全データが規格内：PASS
-
-代表値
-
-t=0ms（12V到達瞬間）の温度を代表値として保持・表示
-
-5. 機能一覧（MVP）
-検査（Inspection）
-
-検査作成（製品名、ロット番号など）
-
-検査作成時に以下の3セッションを自動生成
-
-HIGH（90℃）
-
-AMBIENT（23℃）
-
-LOW（-10℃）
-
-セッション（Soak Session）
-
-セッション詳細表示
-
-環境ごとのCSVアップロード
-
-CSV取込後の自動処理
-
-min / max / avg 計算
-
-規格外点数算出
-
-代表値（0ms温度）抽出
-
-判定（PASS / FAIL / PENDING）
-
-一覧・検索
-
-検査一覧表示
-
-検索条件（例）
-
-ロット番号
-
-環境種別
-
-判定結果
-
-作成日
-
-6. CSV仕様
-
-アップロード単位：環境（セッション）ごと
-
-フォーマット：
-
+## 6. CSV�d�l
+- �w�b�_�[: `offsetMs,tempC`
+- ��:
+```csv
 offsetMs,tempC
 -60000,89.8
 -59980,89.9
@@ -136,89 +44,48 @@ offsetMs,tempC
 0,90.1
 ...
 60000,90.0
+```
 
+## 7. ��ʍ\���iMVP�j
+- /health�i�N���m�F�j
+- �����ꗗ�i�\��j
+- �����ڍׁi�\��j
+- CSV�A�b�v���[�h�i�\��j
 
-offsetMs
+## 8. �Z�p�X�^�b�N
+- Java 17
+- Spring Boot 3.x
+- Spring MVC
+- Thymeleaf
+- Spring Data JPA
+- H2 Database
+- Maven
+- Bootstrap 5
 
-規定電圧12V到達時点を 0ms とした相対時刻
-
-tempC
-
-摂氏温度
-
-7. 画面構成（MVP）
-
-ログイン画面（簡易認証）
-
-検査一覧画面
-
-検査作成画面
-
-検査詳細画面
-
-3セッションのサマリカード
-
-CSVアップロード
-
-セッション詳細画面
-
-サマリ情報
-
-温度ログ表示（間引き／全件切替を想定）
-
-8. 技術スタック
-
-Java 17
-
-Spring Boot 3.x
-
-Spring MVC
-
-Thymeleaf
-
-Spring Data JPA
-
-Spring Security（簡易構成）
-
-H2 Database（開発用）
-
-Maven
-
-Bootstrap（CDN）
-
-9. ローカル起動手順
-git clone https://github.com/＜your-account＞/qc-logbook.git
+## 9. ���[�J���N���菇
+```
 cd qc-logbook
 mvn spring-boot:run
+```
+- �N����� `http://localhost:8080/health` �œ���m�F
 
+## 10. �h���C���p��
+- Inspection: �����i�����j�P��
+- SoakSession: �\�[�N�����Z�b�V�����i���x�т��Ƃ̎����j
+- Trigger: �K��d�����B�C�x���g�it=0ms�j
+- offsetMs: t=0ms ����̑��Ύ��ԁims�j
 
-ブラウザで http://localhost:8080 にアクセス
+## 11. ����̊g���\��
+- CSV�A�b�v���[�h�ƃo���f�[�V����
+- ���胍�W�b�N�̎����Ɖ���
+- ���������̌����E�t�B���^
+- �G�N�X�|�[�g�iCSV/PDF�j
+- �F�؁E�����Ǘ�
 
-10. ドメイン用語
-用語	説明
-Inspection	検査1件
-Soak Session	温度環境ごとの試験単位
-Trigger	規定電圧12V到達イベント
-t=0ms	トリガー発生時刻
-offsetMs	t=0ms基準の相対時刻
-11. 今後の拡張予定
+## 12. ��ʃL���v�`���iScreenshots�j
+- �i�����ɉ�ʃL���v�`����ǉ��\��j
+- ��: ![Health](docs/images/health.png)
 
-電圧ログを含むCSV対応
-
-温度ログのグラフ可視化
-
-大量データの高速バッチ処理
-
-監査ログ（操作履歴）
-
-製品・規格マスタ管理の拡張
-
-12. 設計方針
-
-業務要件を意識したドメイン設計
-
-判定ロジックをService層に集約
-
-大量データを想定した拡張可能な構成
-
-実務での再現性・説明可能性を重視
+## 13. ER�}�iERD�j
+- �i������ER�}��ǉ��\��j
+- ��: ![ERD](docs/images/erd.png)
