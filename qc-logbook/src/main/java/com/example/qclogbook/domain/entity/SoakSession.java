@@ -7,9 +7,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
@@ -18,6 +23,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,12 +33,22 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "soak_sessions")
+@Table(
+    name = "soak_sessions",
+    indexes = {
+        @Index(name = "idx_soak_sessions_inspection", columnList = "inspection_id"),
+        @Index(name = "idx_soak_sessions_env_type", columnList = "env_type")
+    }
+)
 public class SoakSession {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inspection_id", nullable = false)
+    private Inspection inspection;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "env_type", nullable = false, length = 20)
@@ -77,6 +94,10 @@ public class SoakSession {
 
     @Column(name = "out_of_spec_count")
     private Integer outOfSpecCount;
+
+    // 大量データ想定のため、安易な一括カスケードは行わない
+    @OneToMany(mappedBy = "session", orphanRemoval = false)
+    private List<TempPoint> points = new ArrayList<>();
 
     @PrePersist
     private void prePersist() {
