@@ -135,6 +135,25 @@ public class SoakSession {
         }
     }
 
+    /**
+     * 判定とサマリ情報を更新する。
+     */
+    public void updateSummary(
+        BigDecimal summaryMinC,
+        BigDecimal summaryMaxC,
+        BigDecimal summaryAvgC,
+        Integer outOfSpecCount,
+        BigDecimal triggerTempC,
+        Judgement judgement
+    ) {
+        this.summaryMinC = summaryMinC;
+        this.summaryMaxC = summaryMaxC;
+        this.summaryAvgC = summaryAvgC;
+        this.outOfSpecCount = outOfSpecCount;
+        this.triggerTempC = triggerTempC;
+        this.judgement = judgement;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
