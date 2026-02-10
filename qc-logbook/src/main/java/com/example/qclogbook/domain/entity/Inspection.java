@@ -53,6 +53,17 @@ public class Inspection {
     @OneToMany(mappedBy = "inspection", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SoakSession> sessions = new ArrayList<>();
 
+    /**
+     * 作成時の必須情報からInspectionを生成する。
+     */
+    public static Inspection create(String productName, String lotNo, String createdBy) {
+        Inspection inspection = new Inspection();
+        inspection.productName = productName;
+        inspection.lotNo = lotNo;
+        inspection.createdBy = createdBy;
+        return inspection;
+    }
+
     @PrePersist
     private void prePersist() {
         this.createdAt = LocalDateTime.now();

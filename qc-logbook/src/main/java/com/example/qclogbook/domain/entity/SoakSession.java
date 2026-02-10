@@ -99,6 +99,32 @@ public class SoakSession {
     @OneToMany(mappedBy = "session", orphanRemoval = false)
     private List<TempPoint> points = new ArrayList<>();
 
+    /**
+     * デフォルト条件でSoakSessionを生成する。
+     */
+    public static SoakSession createDefault(
+        Inspection inspection,
+        EnvironmentType envType,
+        Integer targetTempC,
+        Integer toleranceC,
+        BigDecimal targetVoltageV,
+        Integer windowBeforeMs,
+        Integer windowAfterMs
+    ) {
+        SoakSession session = new SoakSession();
+        session.inspection = inspection;
+        session.envType = envType;
+        session.judgement = Judgement.PENDING;
+        session.triggerType = TriggerType.V_REACHED;
+        session.targetTempC = targetTempC;
+        session.toleranceC = toleranceC;
+        session.targetVoltageV = targetVoltageV;
+        session.windowBeforeMs = windowBeforeMs;
+        session.windowAfterMs = windowAfterMs;
+        session.outOfSpecCount = 0;
+        return session;
+    }
+
     @PrePersist
     private void prePersist() {
         if (judgement == null) {
