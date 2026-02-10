@@ -10,6 +10,7 @@
     <div th:replace="fragments/header :: siteHeader"></div>
 
     <main class="container py-4" th:fragment="content(content)">
+        <div th:replace="fragments/message :: flashMessages"></div>
         <div th:replace="${content}"></div>
     </main>
 
