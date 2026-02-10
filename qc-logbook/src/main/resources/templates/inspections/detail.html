@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:replace="~{layout :: content(~{::section})}">
+        <section>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h1 class="h4 mb-0">検査詳細</h1>
+                <a class="btn btn-link" href="/inspections">一覧に戻る</a>
+            </div>
+
+            <div class="mb-4">
+                <div><strong>ID:</strong> <span th:text="${inspection.id}"></span></div>
+                <div><strong>製品名:</strong> <span th:text="${inspection.productName}"></span></div>
+                <div><strong>ロット番号:</strong> <span th:text="${inspection.lotNo}"></span></div>
+                <div><strong>作成日時:</strong> <span th:text="${inspection.createdAt}"></span></div>
+            </div>
+
+            <h2 class="h5 mb-3">セッション一覧</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-4" th:each="s : ${sessions}">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="card-title h6" th:text="${s.envType.label}">環境</div>
+                            <div class="small text-muted mb-2">
+                                目標 <span th:text="${s.targetTempC}"></span>℃ / 許容 ±<span th:text="${s.toleranceC}"></span>
+                            </div>
+                            <div class="small text-muted mb-2">
+                                規定電圧 <span th:text="${s.targetVoltageV}"></span>V
+                            </div>
+                            <div class="mb-2">
+                                判定: <span th:text="${s.judgement.label}"></span>
+                            </div>
+                            <div class="mb-2">
+                                規格外点数: <span th:text="${s.outOfSpecCount}"></span>
+                            </div>
+                            <div class="mb-3">
+                                代表値: <span th:text="${s.triggerTempC != null ? s.triggerTempC : '未取込'}"></span>
+                            </div>
+                            <a class="btn btn-outline-primary btn-sm" th:href="@{'/sessions/' + ${s.id}}">セッション詳細</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

@@ -42,9 +42,16 @@ public class SoakSessionController {
         this.csvImportService = csvImportService;
     }
 
+    @GetMapping("/sessions")
+    public String list(Model model) {
+        List<SoakSession> sessions = soakSessionRepository.findAll();
+        model.addAttribute("sessions", sessions);
+        return "sessions/list";
+    }
+
     @GetMapping("/sessions/{id}")
     public String detail(@PathVariable Long id, Model model) {
-        SoakSession session = soakSessionRepository.findById(id)
+        SoakSession soakSession = soakSessionRepository.findById(id)
             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         // 表示負荷を抑えるため、先頭200件まで表示
@@ -53,7 +60,8 @@ public class SoakSessionController {
             .limit(MAX_POINTS)
             .toList();
 
-        model.addAttribute("session", session);
+        model.addAttribute("soakSession", soakSession);
+        model.addAttribute("inspectionId", soakSession.getInspection().getId());
         model.addAttribute("points", points);
         model.addAttribute("csvUploadForm", new CsvUploadForm());
         return "sessions/detail";

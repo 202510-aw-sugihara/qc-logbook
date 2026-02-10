@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ï»¿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-    <!-- ‹N“®Šm”F—p‰æ–Ê‚Å‚ ‚é‚±‚Æ‚ð–¾‹L -->
-    <!-- ‰æ–ÊŽí•Ê‚²‚Æ‚Ì®——p‚É templates/inspections, sessions, fragments ‚ð—pˆÓ -->
-    <div th:replace="layout :: content(~{::section})">
+    <!-- èµ·å‹•ç¢ºèªç”¨ç”»é¢ã§ã‚ã‚‹ã“ã¨ã‚’æ˜Žè¨˜ -->
+    <!-- ç”»é¢ç¨®åˆ¥ã”ã¨ã®æ•´ç†ç”¨ã« templates/inspections, sessions, fragments ã‚’ç”¨æ„ -->
+    <div th:replace="~{layout :: content(~{::section})}">
         <section>
             <div class="alert alert-success" role="alert">
                 <div class="fw-semibold">QC Logbook is running</div>

@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:replace="~{layout :: content(~{::section})}">
+        <section>
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+                <div>
+                    <h1 class="h4 mb-1">セッション詳細</h1>
+                    <div class="small text-muted d-flex align-items-center gap-2 px-2 py-1 rounded"
+                         th:style="${soakSession.envType != null ? (soakSession.envType.name() == 'HIGH' ? 'background-color:#fde8e8;' : (soakSession.envType.name() == 'AMBIENT' ? 'background-color:#e7f8c8; color:#1f2d16;' : 'background-color:#e7f7fb;')) : 'background-color:#f1f3f5;'}">
+                        <span class="fw-semibold">環境:</span>
+                        <span th:text="${soakSession.envType != null ? soakSession.envType.label : '-'}"></span>
+                        <span>／ 目標:</span>
+                        <span th:text="${soakSession.targetTempC}"></span>℃
+                    </div>
+                </div>
+                <a class="btn btn-link" th:href="@{'/inspections/' + ${inspectionId}}">検査詳細へ戻る</a>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row g-2">
+                        <div class="col-12 col-md-4">
+                            <div class="text-muted small">環境</div>
+                            <div class="fw-semibold" th:text="${soakSession.envType != null ? soakSession.envType.label : '-'}"></div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="text-muted small">目標温度 / 許容</div>
+                            <div>
+                                <span th:text="${soakSession.targetTempC}"></span>℃
+                                / ±<span th:text="${soakSession.toleranceC}"></span>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="text-muted small">規定電圧 / トリガー種別</div>
+                            <div>
+                                <span th:text="${soakSession.targetVoltageV}"></span>V
+                                / <span th:text="${soakSession.triggerType}"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <div class="text-muted small">判定</div>
+                            <div th:text="${soakSession.judgement != null ? soakSession.judgement.label : '-'}"></div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="text-muted small">代表値（0ms温度）</div>
+                            <div th:text="${soakSession.triggerTempC != null ? soakSession.triggerTempC : '未取込'}"></div>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="text-muted small">規格外点数</div>
+                            <div th:text="${soakSession.outOfSpecCount}"></div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="text-muted small">サマリ（Min / Max / Avg）</div>
+                            <div>
+                                <span th:text="${soakSession.summaryMinC != null ? soakSession.summaryMinC : '-'}"></span>
+                                /
+                                <span th:text="${soakSession.summaryMaxC != null ? soakSession.summaryMaxC : '-'}"></span>
+                                /
+                                <span th:text="${soakSession.summaryAvgC != null ? soakSession.summaryAvgC : '-'}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="h6 mb-3">CSV取込</h2>
+                    <form th:action="@{'/sessions/' + ${soakSession.id} + '/upload'}" th:object="${csvUploadForm}" method="post" enctype="multipart/form-data">
+                        <div class="input-group">
+                            <input class="form-control" type="file" th:field="*{file}" accept=".csv" />
+                            <button class="btn btn-primary" type="submit">CSV取込</button>
+                        </div>
+                        <div class="form-text">
+                            CSVは offsetMs,tempC 形式。範囲は -60000〜+60000ms。
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <h2 class="h6 mb-0">TempPoint一覧</h2>
+                <div class="small text-muted">表示件数は制限される場合があります。</div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(points)}" class="alert alert-secondary">
+                まだ温度ポイントがありません。
+            </div>
+
+            <table th:if="${!#lists.isEmpty(points)}" class="table table-sm table-striped">
+                <thead>
+                <tr>
+                    <th>offsetMs</th>
+                    <th>tempC</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${points}">
+                    <td th:text="${p.offsetMs}"></td>
+                    <td th:text="${p.tempC}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>

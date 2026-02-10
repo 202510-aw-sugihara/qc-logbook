@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:replace="~{layout :: content(~{::section})}">
+        <section>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h1 class="h4 mb-0">検査一覧</h1>
+                <a class="btn btn-primary btn-sm" href="/inspections/new">新規作成</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(inspections)}" class="alert alert-secondary">
+                まだ検査がありません。
+            </div>
+
+            <table th:if="${!#lists.isEmpty(inspections)}" class="table table-sm table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>製品名</th>
+                    <th>ロット番号</th>
+                    <th>作成日時</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="i : ${inspections}">
+                    <td th:text="${i.id}"></td>
+                    <td th:text="${i.productName}"></td>
+                    <td th:text="${i.lotNo}"></td>
+                    <td th:text="${i.createdAt}"></td>
+                    <td><a th:href="@{'/inspections/' + ${i.id}}">詳細</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>

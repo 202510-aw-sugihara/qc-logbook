@@ -20,4 +20,13 @@ public class InspectionCreateRequest {
 
     @Size(max = 50)
     private String createdBy;
+
+    public InspectionCreateRequest() {
+    }
+
+    public InspectionCreateRequest(String productName, String lotNo, String createdBy) {
+        this.productName = productName;
+        this.lotNo = lotNo;
+        this.createdBy = createdBy;
+    }
 }

@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:replace="~{layout :: content(~{::section})}">
+        <section class="col-12 col-md-6">
+            <h1 class="h4 mb-3">検査作成</h1>
+
+            <form th:action="@{/inspections}" th:object="${inspectionCreateForm}" method="post">
+                <div class="alert alert-danger" th:if="${#fields.hasGlobalErrors()}">
+                    <div th:each="err : ${#fields.globalErrors()}" th:text="${err}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="productName">製品名</label>
+                    <input class="form-control" id="productName" type="text" th:field="*{productName}" />
+                    <div class="text-danger small" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="lotNo">ロット番号</label>
+                    <input class="form-control" id="lotNo" type="text" th:field="*{lotNo}" />
+                    <div class="text-danger small" th:if="${#fields.hasErrors('lotNo')}" th:errors="*{lotNo}"></div>
+                </div>
+
+                <button class="btn btn-primary" type="submit">作成</button>
+                <a class="btn btn-link" href="/inspections">一覧に戻る</a>
+            </form>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:replace="~{layout :: content(~{::section})}">
+        <section>
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h1 class="h4 mb-0">セッション一覧</h1>
+                <a class="btn btn-link" href="/inspections">検査一覧へ</a>
+            </div>
+
+            <div th:if="${#lists.isEmpty(sessions)}" class="alert alert-secondary">
+                まだセッションがありません。
+            </div>
+
+            <table th:if="${!#lists.isEmpty(sessions)}" class="table table-sm table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>環境</th>
+                    <th>判定</th>
+                    <th>目標温度</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="s : ${sessions}">
+                    <td th:text="${s.id}"></td>
+                    <td th:text="${s.envType.label}"></td>
+                    <td th:text="${s.judgement.label}"></td>
+                    <td th:text="${s.targetTempC}"></td>
+                    <td><a th:href="@{'/sessions/' + ${s.id}}">詳細</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
