@@ -94,19 +94,6 @@ class SoakSessionJudgementServiceTest {
     }
 
     private static TempPoint point(int offsetMs, String tempC) {
-        TempPoint p = new TempPoint();
-        setField(p, "offsetMs", offsetMs);
-        setField(p, "tempC", new BigDecimal(tempC));
-        return p;
-    }
-
-    private static void setField(Object target, String fieldName, Object value) {
-        try {
-            var field = target.getClass().getDeclaredField(fieldName);
-            field.setAccessible(true);
-            field.set(target, value);
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException(e);
-        }
+        return TempPoint.create(offsetMs, new BigDecimal(tempC));
     }
 }

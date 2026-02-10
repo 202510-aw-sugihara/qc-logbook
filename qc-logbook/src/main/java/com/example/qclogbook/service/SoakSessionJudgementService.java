@@ -3,6 +3,7 @@
 import com.example.qclogbook.domain.entity.SoakSession;
 import com.example.qclogbook.domain.entity.TempPoint;
 import com.example.qclogbook.domain.enums.Judgement;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,6 +12,7 @@ import java.util.List;
 /**
  * SoakSessionのサマリと判定を再計算するサービス。
  */
+@Service
 public class SoakSessionJudgementService {
 
     public void recompute(SoakSession session, List<TempPoint> points) {

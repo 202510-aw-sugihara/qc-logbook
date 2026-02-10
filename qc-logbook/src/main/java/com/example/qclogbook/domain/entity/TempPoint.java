@@ -55,6 +55,23 @@ public class TempPoint {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    /**
+     * セッション未紐付けの測定点を生成する。
+     */
+    public static TempPoint create(Integer offsetMs, BigDecimal tempC) {
+        TempPoint point = new TempPoint();
+        point.offsetMs = offsetMs;
+        point.tempC = tempC;
+        return point;
+    }
+
+    /**
+     * 測定点にセッションを紐付ける。
+     */
+    public void assignSession(SoakSession session) {
+        this.session = session;
+    }
+
     @PrePersist
     private void prePersist() {
         this.createdAt = LocalDateTime.now();
